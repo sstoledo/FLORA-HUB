@@ -16,7 +16,11 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Flora-Hub",
   description: "App para regalar flores amarillas digitales",
+  icons: {
+    icon: "/images/floresAmarillas.ico",
+  },
 };
+
 
 
 export default function RootLayout({
