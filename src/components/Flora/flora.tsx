@@ -167,9 +167,12 @@ export default function Flora() {
                     onClick={abrirModal}
                     className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center"
                   >
-                    <Info className="mr-2" /> Más información
+                    <Info className="mr-2" /> Notas para ti chikis
                   </button>
                 </div>
+                <span className="text-xs text-gray-500">
+                  *Toca las flores
+                </span>
               </motion.div>
             )}
           </div>
