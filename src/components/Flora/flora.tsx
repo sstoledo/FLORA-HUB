@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import { Heart, Moon, Sun, RefreshCw, Info } from "lucide-react";
 import useSound from "use-sound";
 import Head from "next/head";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
 
 import 'swiper/css';
 import 'swiper/css/navigation';
