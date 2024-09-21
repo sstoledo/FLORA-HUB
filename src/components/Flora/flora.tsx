@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Heart, Moon, Sun } from "lucide-react";
+import { Heart, Moon, Sun, RefreshCw } from "lucide-react";
 import useSound from "use-sound";
 
 export default function Flora() {
@@ -21,7 +21,6 @@ export default function Flora() {
   const [playPop] = useSound("/sounds/pop.mp3");
 
   useEffect(() => {
-    // Aplicar modo oscuro al body
     document.body.classList.toggle("dark", modoOscuro);
   }, [modoOscuro]);
 
@@ -35,11 +34,16 @@ export default function Flora() {
   const animarFlor = (index: number) => {
     playPop();
     setFloresAnimadas((prev) => {
-
       const newState = [...prev];
       newState[index] = true;
       return newState;
     });
+  };
+
+  const reiniciarAplicacion = () => {
+    setNombre("");
+    setMostrarFlores(false);
+    setFloresAnimadas([false, false, false, false, false]);
   };
 
   return (
@@ -140,6 +144,16 @@ export default function Flora() {
 };`}
               </p>
             </motion.div>
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={reiniciarAplicacion}
+                className={`bg-gradient-to-r from-yellow-400 to-pink-500 hover:from-yellow-500 hover:to-pink-600 text-white font-bold py-2 px-6 rounded-full transition duration-300 flex items-center justify-center shadow-lg ${
+                  modoOscuro ? "hover:shadow-purple-500/50" : "hover:shadow-pink-500/50"
+                }`}
+              >
+                <RefreshCw className="mr-2" /> Reiniciar
+              </button>
+            </div>
           </motion.div>
         )}
       </div>
