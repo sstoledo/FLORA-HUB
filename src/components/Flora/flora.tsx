@@ -53,7 +53,7 @@ export default function Flora() {
         <title>Flores Amarillas Digitales</title>
         <meta property="og:title" content="Flores Amarillas Digitales" />
         <meta property="og:description" content="Regala flores amarillas digitales a tu amor" />
-        <meta property="og:image" content="/og-image.jpg" />
+        <meta property="og:image" content="/public/images/floresAmarillas.ico" />
         <meta property="og:url" content="https://sstoledo.netlify.app/" />
         <meta property="og:type" content="website" />
       </Head>
