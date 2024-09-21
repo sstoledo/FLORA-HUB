@@ -1,0 +1,148 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Heart, Moon, Sun } from "lucide-react";
+import useSound from "use-sound";
+
+export default function Flora() {
+  const [nombre, setNombre] = useState("");
+  const [mostrarFlores, setMostrarFlores] = useState(false);
+  const [modoOscuro, setModoOscuro] = useState(false);
+  const [floresAnimadas, setFloresAnimadas] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+
+  const [playReveal] = useSound("/sounds/reveal.mp3");
+  const [playPop] = useSound("/sounds/pop.mp3");
+
+  useEffect(() => {
+    // Aplicar modo oscuro al body
+    document.body.classList.toggle("dark", modoOscuro);
+  }, [modoOscuro]);
+
+  const regalarFlores = () => {
+    if (nombre) {
+      setMostrarFlores(true);
+      playReveal();
+    }
+  };
+
+  const animarFlor = (index: number) => {
+    playPop();
+    setFloresAnimadas((prev) => {
+
+      const newState = [...prev];
+      newState[index] = true;
+      return newState;
+    });
+  };
+
+  return (
+    <div
+      className={`min-h-screen transition-colors duration-300 ${
+        modoOscuro
+          ? "bg-gradient-to-b from-gray-900 to-purple-900"
+          : "bg-gradient-to-b from-purple-400 to-pink-500"
+      } flex flex-col items-center justify-center p-4`}
+    >
+      <button
+        onClick={() => setModoOscuro(!modoOscuro)}
+        className="absolute top-4 right-4 p-2 rounded-full bg-opacity-50 bg-white dark:bg-opacity-50 dark:bg-gray-800"
+      >
+        {modoOscuro ? (
+          <Sun className="text-yellow-300" />
+        ) : (
+          <Moon className="text-gray-800" />
+        )}
+      </button>
+      <div
+        className={`bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-md transition-colors duration-300`}
+      >
+        <h1
+          className={`text-3xl font-bold text-center mb-4 ${
+            modoOscuro ? "text-purple-300" : "text-purple-600"
+          }`}
+        >
+          Flores Amarillas Digitales
+        </h1>
+        {!mostrarFlores ? (
+          <>
+            <input
+              type="text"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              placeholder="Nombre de tu amor"
+              className="w-full p-2 mb-4 border rounded dark:bg-gray-700 dark:text-white dark:border-gray-600"
+            />
+            <button
+              onClick={regalarFlores}
+              className="w-full bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded transition duration-300"
+            >
+              Regalar Flores Amarillas
+            </button>
+          </>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1 }}
+            className="text-center"
+          >
+            <div className="flex justify-center mb-4">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1, rotate: 360 }}
+                  transition={{ delay: i * 0.2 }}
+                  className="text-4xl cursor-pointer"
+                  onClick={() => animarFlor(i)}
+                >
+                  <motion.div
+                    animate={floresAnimadas[i] ? { scale: [1, 1.2, 1] } : {}}
+                    transition={{ duration: 0.3 }}
+                  >
+                    🌻
+                  </motion.div>
+                </motion.div>
+              ))}
+            </div>
+            <p
+              className={`text-xl mb-4 ${
+                modoOscuro ? "text-white" : "text-gray-200"
+              }`}
+            >
+              Para {nombre}, con todo mi{" "}
+              <Heart className="inline-block text-red-500" />
+            </p>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5 }}
+              className={`p-4 rounded ${
+                modoOscuro ? "bg-gray-700" : "bg-gray-100"
+              }`}
+            >
+              <p
+                className={`text-sm font-mono ${
+                  modoOscuro ? "text-gray-300" : "text-gray-800"
+                }`}
+              >
+                {`const amor = {
+  tu: '${nombre}',
+  yo: 'Programador',
+  sentimiento: 'infinito'
+};`}
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+}
