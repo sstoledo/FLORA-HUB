@@ -2,11 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Heart, Moon, Sun, RefreshCw } from "lucide-react";
+import { Heart, Moon, Sun, RefreshCw, Info } from "lucide-react";
 import useSound from "use-sound";
 import Head from "next/head";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "../ui/dialog";
+
+import 'swiper/css';
+import 'swiper/css/navigation';
+import Modal from "../Modal/modal";
 
 export default function Flora() {
+
   const nombreAmor = "Eli"; // Nombre personalizado
   const [mostrarFlores, setMostrarFlores] = useState(false);
   const [modoOscuro, setModoOscuro] = useState(false);
@@ -17,6 +23,7 @@ export default function Flora() {
     false,
     false,
   ]);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   const [playReveal] = useSound("/sounds/reveal.mp3");
   const [playPop] = useSound("/sounds/pop.mp3");
@@ -44,6 +51,14 @@ export default function Flora() {
     setFloresAnimadas([false, false, false, false, false]);
   };
 
+  const abrirModal = () => {
+    setMostrarModal(true);
+  };
+
+  const cerrarModal = () => {
+    setMostrarModal(false);
+  };
+
   return (
     <>
       <Head>
@@ -55,11 +70,10 @@ export default function Flora() {
         <meta property="og:type" content="website" />
       </Head>
       <div
-        className={`min-h-screen transition-colors duration-300 ${
-          modoOscuro
-            ? "bg-gradient-to-b from-gray-900 to-purple-900"
-            : "bg-gradient-to-b from-purple-400 to-pink-500"
-        } flex flex-col items-center justify-center p-4`}
+        className={`min-h-screen transition-colors duration-300 ${modoOscuro
+          ? "bg-gradient-to-b from-gray-900 to-purple-900"
+          : "bg-gradient-to-b from-purple-400 to-pink-500"
+          } flex flex-col items-center justify-center p-4`}
       >
         <button
           onClick={() => setModoOscuro(!modoOscuro)}
@@ -71,24 +85,31 @@ export default function Flora() {
             <Moon className="text-gray-800" />
           )}
         </button>
+        <button
+          onClick={reiniciarAplicacion}
+          className="absolute top-4 left-4 p-2 rounded-full bg-opacity-50 bg-white dark:bg-opacity-50 dark:bg-gray-800"
+        >
+          <RefreshCw className={modoOscuro ? "text-purple-300" : "text-purple-600"} />
+        </button>
         <div
           className={`bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-md transition-colors duration-300 relative`}
         >
           <h1
-            className={`text-3xl font-bold text-center mb-6 ${
-              modoOscuro ? "text-purple-300" : "text-purple-600"
-            }`}
+            className={`text-3xl font-bold text-center mb-6 ${modoOscuro ? "text-purple-300" : "text-purple-600"
+              }`}
           >
             Flores Amarillas Digitales
           </h1>
           <div className="flex flex-col items-center space-y-6">
             {!mostrarFlores ? (
-              <button
-                onClick={regalarFlores}
-                className="w-full max-w-xs bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-6 rounded-full transition duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
-              >
-                Regalar Flores Amarillas
-              </button>
+              <div className="w-full flex justify-center">
+                <button
+                  onClick={regalarFlores}
+                  className="w-full max-w-xs bg-yellow-400 hover:bg-yellow-500 text-white font-bold py-3 px-6 rounded-full transition duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                >
+                  Regalar Flores Amarillas
+                </button>
+              </div>
             ) : (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -116,9 +137,8 @@ export default function Flora() {
                   ))}
                 </div>
                 <p
-                  className={`text-xl mb-6 ${
-                    modoOscuro ? "text-white" : "text-gray-700"
-                  }`}
+                  className={`text-xl mb-6 ${modoOscuro ? "text-white" : "text-gray-700"
+                    }`}
                 >
                   Para {nombreAmor}, con todo mi{" "}
                   <Heart className="inline-block text-red-500" />
@@ -128,14 +148,12 @@ export default function Flora() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.5 }}
-                  className={`p-4 rounded-lg ${
-                    modoOscuro ? "bg-gray-700" : "bg-yellow-100"
-                  }`}
+                  className={`p-4 rounded-lg ${modoOscuro ? "bg-gray-700" : "bg-yellow-100"
+                    }`}
                 >
                   <p
-                    className={`text-sm font-mono ${
-                      modoOscuro ? "text-gray-300" : "text-gray-800"
-                    }`}
+                    className={`text-sm font-mono ${modoOscuro ? "text-gray-300" : "text-gray-800"
+                      }`}
                   >
                     {`const amor = {
       tu: '${nombreAmor}',
@@ -144,11 +162,30 @@ export default function Flora() {
     };`}
                   </p>
                 </motion.div>
+
+                <div className="w-full flex justify-center mt-6">
+                  <button
+                    onClick={abrirModal}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 shadow-md hover:shadow-lg transform hover:scale-105 flex items-center justify-center"
+                  >
+                    <Info className="mr-2" /> Más información
+                  </button>
+                </div>
               </motion.div>
             )}
           </div>
         </div>
       </div>
+
+      {mostrarModal && (
+        <Modal 
+          nombreAmor={nombreAmor}
+          mostrarModal={mostrarModal}
+          cerrarModal={cerrarModal}
+        />
+      )}
+
+
     </>
   );
 }
