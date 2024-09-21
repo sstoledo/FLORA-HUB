@@ -35,7 +35,7 @@ export default function Flora() {
     playPop();
     setFloresAnimadas((prev) => {
       const newState = [...prev];
-      newState[index] = true;
+      newState[index] = !newState[index]; // Cambia el estado de animación
       return newState;
     });
   };
@@ -108,8 +108,8 @@ export default function Flora() {
                   onClick={() => animarFlor(i)}
                 >
                   <motion.div
-                    animate={floresAnimadas[i] ? { scale: [1, 1.2, 1] } : {}}
-                    transition={{ duration: 0.3 }}
+                    animate={floresAnimadas[i] ? { scale: [1, 1.2, 1] } : { scale: 1 }}
+                    transition={{ duration: 0.3, repeat: floresAnimadas[i] ? Infinity : 0, repeatType: "reverse" }}
                   >
                     🌻
                   </motion.div>
@@ -121,9 +121,11 @@ export default function Flora() {
                 modoOscuro ? "text-white" : "text-gray-200"
               }`}
             >
-              Para {nombre}, con todo mi{" "}
+              Para {nombre.charAt(0).toUpperCase() + nombre.slice(1)}, con todo
+              mi{" "}
               <Heart className="inline-block text-red-500" />
             </p>
+
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
